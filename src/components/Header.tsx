@@ -7,7 +7,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentView, setCurrentView }) => {
-  const { wallet, disconnectWallet, switchNetwork } = useWallet();
+  const { wallet, disconnectWallet, switchNetwork, connectWallet } =
+    useWallet();
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -20,87 +21,102 @@ const Header: React.FC<HeaderProps> = ({ currentView, setCurrentView }) => {
   ];
 
   return (
-    <header className="bg-[#101225] border-b border-[#2D3748]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center justify-between gap-6">
-          <h1 className="text-2xl pixel-font text-white">
-            MONAD<span className="text-[#B07BFF]">TYPE</span>
-          </h1>
+    <header className="flex items-center justify-between px-6 h-[70px] bg-[rgba(0,0,0,0.3)] border-b border-[rgba(255,255,255,0.08)]">
+      {/* LEFT - Logo */}
+      <div className="flex items-center">
+        <h1 className="text-xl font-bold text-white">
+          MONAD<span className="text-[#B07BFF]">TYPE</span>
+        </h1>
+      </div>
 
-          {wallet.isConnected && (
-            <nav className="hidden lg:flex items-center gap-6">
-              {navItems.map((item) => (
+      {/* CENTER - Navigation - TOP CENTER */}
+      <nav className="hidden sm:flex items-center gap-4">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setCurrentView(item.id)}
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:scale-105 ${
+              currentView === item.id
+                ? "bg-[#B07BFF] text-white"
+                : "text-gray-300 hover:text-white hover:bg-[rgba(255,255,255,0.1)]"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Mobile Navigation */}
+      <nav className="sm:hidden flex items-center gap-2">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setCurrentView(item.id)}
+            className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors hover:scale-105 ${
+              currentView === item.id
+                ? "bg-[#B07BFF] text-white"
+                : "text-gray-300 hover:text-white hover:bg-[rgba(255,255,255,0.1)]"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* RIGHT - Wallet Actions */}
+      <div className="flex items-center gap-3">
+        {!wallet.isConnected ? (
+          <button
+            onClick={connectWallet}
+            className="px-4 py-2 bg-[#B07BFF] text-white rounded-lg text-sm font-medium hover:bg-[#9A6AE8] transition-colors"
+          >
+            Connect Wallet
+          </button>
+        ) : (
+          <>
+            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-300">
+              <span>Balance:</span>
+              <span className="text-[#B07BFF] font-mono">
+                {parseFloat(wallet.tokenBalance || "0").toFixed(2)} MNTYPE
+              </span>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-300">
+              <span>Network:</span>
+              <span
+                className={
+                  wallet.isCorrectNetwork ? "text-[#B07BFF]" : "text-red-400"
+                }
+              >
+                {wallet.isCorrectNetwork ? "Monad" : "Wrong"}
+              </span>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2 bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.08)] rounded-lg px-3 py-2">
+              <div className="w-2 h-2 rounded-full bg-[#B07BFF] animate-pulse" />
+              <span className="font-mono text-sm text-gray-300">
+                {wallet.address ? formatAddress(wallet.address) : "No Address"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {!wallet.isCorrectNetwork && (
                 <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id)}
-                  className={`text-sm uppercase tracking-wide transition-colors ${
-                    currentView === item.id
-                      ? "text-[#B07BFF]"
-                      : "text-gray-300 hover:text-white"
-                  }`}
+                  onClick={switchNetwork}
+                  className="px-4 py-2 bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.08)] rounded-lg text-sm font-medium text-white hover:bg-[rgba(255,255,255,0.15)] transition-colors"
                 >
-                  {item.label}
+                  Switch
                 </button>
-              ))}
-            </nav>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 text-xs font-medium">
-          {wallet.isConnected ? (
-            <>
-              <div className="flex items-center gap-2 bg-[#1A1C2E] border border-[#2D3748] rounded-md px-3 py-1">
-                <span className="w-2 h-2 rounded-full bg-[#B07BFF] animate-pulse" />
-                <span className="text-gray-300">Connected</span>
-              </div>
-
-              <div className="hidden sm:flex items-center gap-1 text-gray-300">
-                <span>Balance:</span>
-                <span className="font-mono text-[#B07BFF]">
-                  {parseFloat(wallet.tokenBalance || "0").toFixed(2)} MNTYPE
-                </span>
-              </div>
-
-              <div className="hidden sm:flex items-center gap-1 text-gray-300">
-                <span>Network:</span>
-                <span
-                  className={
-                    wallet.isCorrectNetwork ? "text-[#B07BFF]" : "text-red-400"
-                  }
-                >
-                  {wallet.isCorrectNetwork ? "Monad Testnet" : "Wrong network"}
-                </span>
-              </div>
-
-              {wallet.address && (
-                <span className="hidden sm:inline-flex font-mono bg-[#1A1C2E] border border-[#2D3748] rounded-md px-3 py-1">
-                  {formatAddress(wallet.address)}
-                </span>
               )}
-
-              <div className="flex items-center gap-2">
-                {!wallet.isCorrectNetwork && (
-                  <button
-                    onClick={switchNetwork}
-                    className="wallet-button text-xs px-3 py-2"
-                  >
-                    Switch Network
-                  </button>
-                )}
-                <button
-                  onClick={disconnectWallet}
-                  className="wallet-button text-xs px-3 py-2"
-                >
-                  Disconnect
-                </button>
-              </div>
-            </>
-          ) : (
-            <span className="text-gray-400">
-              Connect your wallet to get started
-            </span>
-          )}
-        </div>
+              <button
+                onClick={disconnectWallet}
+                className="px-4 py-2 bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.08)] rounded-lg text-sm font-medium text-white hover:bg-[rgba(255,255,255,0.15)] transition-colors"
+              >
+                Disconnect
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </header>
   );

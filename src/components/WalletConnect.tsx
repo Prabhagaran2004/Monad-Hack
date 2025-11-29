@@ -41,28 +41,59 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect }) => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 24,
+      }}
+    >
       <button
         onClick={handleConnect}
         disabled={isConnecting}
-        className="wallet-button text-lg px-10 py-5 min-w-[280px]"
+        className="btn-primary"
+        style={{ minWidth: 280 }}
       >
-        {isConnecting ? "CONNECTING..." : "CONNECT WALLET"}
+        {isConnecting ? "Connecting..." : "Connect Wallet"}
       </button>
 
       {error && (
-        <div className="text-red-400 text-sm text-center max-w-md bg-red-900/20 px-4 py-3 rounded-lg border border-red-900/30">
+        <div
+          style={{
+            color: "var(--error)",
+            fontSize: 14,
+            textAlign: "center",
+            maxWidth: 360,
+            padding: "12px 16px",
+            background: "rgba(239, 68, 68, 0.1)",
+            border: "1px solid rgba(239, 68, 68, 0.4)",
+            borderRadius: 12,
+          }}
+        >
           {error}
         </div>
       )}
 
-      <div className="text-gray-500 text-sm text-center max-w-md space-y-2 font-light">
+      <div
+        style={{
+          fontSize: 14,
+          color: "var(--text-secondary)",
+          textAlign: "center",
+          maxWidth: 360,
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
         <p>Make sure you have MetaMask installed.</p>
-        <p>The game will automatically connect to Monad Testnet.</p>
+        <p>The game automatically connects to the Monad Testnet.</p>
       </div>
 
-      <div className="text-gray-600 text-xs text-center font-light">
-        <p>Don't have a wallet? Get MetaMask from metamask.io</p>
+      <div
+        style={{ fontSize: 12, color: "var(--text-secondary)", opacity: 0.7 }}
+      >
+        Don't have a wallet? Get MetaMask from metamask.io
       </div>
     </div>
   );

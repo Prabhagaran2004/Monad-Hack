@@ -1,74 +1,38 @@
 import React from "react";
 import { useGame } from "../contexts/GameContext.tsx";
-import { useWallet } from "../contexts/WalletContext.tsx";
 
 const GameHUD: React.FC = () => {
   const { gameState } = useGame();
-  const { wallet } = useWallet();
-
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+  const livesDisplay = "💜".repeat(gameState.lives);
 
   return (
-    <div className="hud w-full">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
-        <div className="stat-card">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Level
-          </div>
-          <div className="text-2xl pixel-font level-display">
-            {gameState.level}
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Score
-          </div>
-          <div className="text-2xl pixel-font score-display">
+    <div className="bg-[#161625] border border-[#2D2F45] rounded-xl shadow-xl p-5 space-y-4">
+      <h3 className="pixel-font text-xs uppercase tracking-wider text-gray-400">
+        Battle Status
+      </h3>
+      <div className="space-y-3 text-sm text-gray-300">
+        <div className="flex items-center justify-between">
+          <span>Score</span>
+          <span className="text-[#B07BFF] font-semibold">
             {gameState.score.toLocaleString()}
-          </div>
+          </span>
         </div>
-
-        <div className="stat-card">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Lives
-          </div>
-          <div className="text-2xl font-bold text-[#B07BFF]">
-            {"💜".repeat(gameState.lives)}
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Enemies
-          </div>
-          <div className="text-2xl pixel-font text-[#B07BFF]">
+        <div className="flex items-center justify-between">
+          <span>Enemies Remaining</span>
+          <span className="text-[#B07BFF] font-semibold">
             {gameState.enemies.length}
-          </div>
+          </span>
         </div>
-
-        <div className="stat-card">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Balance
-          </div>
-          <div className="text-lg pixel-font text-[#B07BFF]">
-            {parseFloat(wallet.tokenBalance).toFixed(1)} MNTYPE
-          </div>
+        <div className="flex items-center justify-between">
+          <span>Lives</span>
+          <span
+            className="text-[#B07BFF] font-semibold"
+            aria-label={`${gameState.lives} lives remaining`}
+          >
+            {livesDisplay}
+          </span>
         </div>
       </div>
-
-      {wallet.address && (
-        <div className="mt-4 pt-4 border-t border-[#2D3748] text-center">
-          <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
-            Player
-          </div>
-          <div className="font-mono text-sm text-[#B07BFF]">
-            {formatAddress(wallet.address)}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

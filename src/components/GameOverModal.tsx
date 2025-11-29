@@ -15,38 +15,71 @@ const GameOverModal: React.FC<GameOverModalProps> = ({
 }) => {
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
-        <h2 className="text-4xl pixel-font text-[#B07BFF] mb-8 text-center neon-text">
-          GAME OVER
-        </h2>
-
-        <div className="space-y-6 mb-8">
-          <div className="flex justify-between items-center py-3 px-4 bg-[#1A1C2E] rounded-lg border border-[#2D3748]">
-            <span className="text-gray-400 font-light">Final Score:</span>
-            <span className="text-2xl pixel-font score-display">
-              {score.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-3 px-4 bg-[#1A1C2E] rounded-lg border border-[#2D3748]">
-            <span className="text-gray-400 font-light">Level Reached:</span>
-            <span className="text-2xl pixel-font level-display">{level}</span>
-          </div>
-        </div>
-
-        <div className="text-center mb-8">
-          <p className="text-gray-400 font-light">
-            Better luck next time! Practice your typing and try again.
+      <div
+        className="modal-panel"
+        style={{ display: "flex", flexDirection: "column", gap: 24 }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h2
+            className="pixel-font"
+            style={{
+              fontSize: 28,
+              marginBottom: 12,
+              color: "var(--accent-purple)",
+            }}
+          >
+            Game Over
+          </h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>
+            The station fell this time, but data is never lost. Recalibrate and
+            strike back.
           </p>
         </div>
 
-        <div className="space-y-4">
-          <button onClick={onRestart} className="btn-primary w-full">
-            PLAY AGAIN
-          </button>
+        <div
+          className="card"
+          style={{
+            background: "var(--bg-primary)",
+            borderColor: "var(--border-color)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: "var(--text-secondary)" }}>Final Score</span>
+            <span className="mono-font" style={{ fontSize: 20 }}>
+              {score.toLocaleString()}
+            </span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: "var(--text-secondary)" }}>
+              Level Reached
+            </span>
+            <span className="mono-font" style={{ fontSize: 20 }}>
+              {level}
+            </span>
+          </div>
+        </div>
 
-          <button onClick={onBackToMenu} className="btn-secondary w-full">
-            BACK TO MENU
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <button onClick={onRestart} className="btn-primary">
+            Restart Mission
+          </button>
+          <button onClick={onBackToMenu} className="btn-secondary">
+            Back to Hangar
           </button>
         </div>
       </div>

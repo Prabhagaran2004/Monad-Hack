@@ -70,94 +70,148 @@ const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
-        <h2 className="text-4xl pixel-font text-white mb-8 text-center">
-          LEVEL {level} COMPLETE!
-        </h2>
+      <div
+        className="modal-panel"
+        style={{ display: "flex", flexDirection: "column", gap: 24 }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h2 className="pixel-font" style={{ fontSize: 28, marginBottom: 12 }}>
+            Level {level} Cleared
+          </h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>
+            Nice work commander. Secure your reward or push forward to the next
+            wave.
+          </p>
+        </div>
 
-        <div className="space-y-6 mb-8">
-          <div className="flex justify-between items-center py-3 px-4 bg-[#1A1C2E] rounded-lg border border-[#2D3748]">
-            <span className="text-gray-400 font-light">Final Score:</span>
-            <span className="text-2xl pixel-font score-display">
+        <div
+          className="card"
+          style={{
+            background: "var(--bg-primary)",
+            borderColor: "var(--border-color)",
+            alignItems: "stretch",
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: "var(--text-secondary)" }}>Final Score</span>
+            <span
+              className="mono-font"
+              style={{ fontSize: 20, fontWeight: 700 }}
+            >
               {score.toLocaleString()}
             </span>
           </div>
-
-          <div className="flex justify-between items-center py-3 px-4 bg-[#1A1C2E] rounded-lg border border-[#2D3748]">
-            <span className="text-gray-400 font-light">Reward:</span>
-            <span className="text-2xl pixel-font text-[#B07BFF]">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: "var(--text-secondary)" }}>Reward</span>
+            <span
+              className="mono-font"
+              style={{ fontSize: 20, color: "var(--accent-purple)" }}
+            >
               {currentReward.amount} MNTYPE
             </span>
           </div>
         </div>
 
         {claimStatus === "idle" && (
-          <div className="space-y-4">
-            <p className="text-gray-400 text-center font-light">
-              Claim your reward to continue to the next level
-            </p>
-
+          <>
             <button
               onClick={claimReward}
               disabled={isClaiming || !canClaim}
-              className="btn-primary w-full"
+              className="btn-primary"
             >
               {isClaiming
-                ? "Claiming..."
+                ? "Processing..."
                 : `Claim ${currentReward.amount} MNTYPE`}
             </button>
-
-            <button onClick={onContinue} className="btn-secondary w-full">
+            <button onClick={onContinue} className="btn-secondary">
               Skip & Continue
             </button>
-          </div>
+            {!canClaim && (
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "var(--warning)",
+                  textAlign: "center",
+                }}
+              >
+                Reach 50 score to unlock this reward.
+              </div>
+            )}
+          </>
         )}
 
         {claimStatus === "success" && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="text-5xl mb-4 neon-text">✓</div>
-              <p className="text-white font-medium text-lg pixel-font">
-                {currentReward.amount} MNTYPE CLAIMED
-              </p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              textAlign: "center",
+            }}
+          >
+            <div
+              className="badge badge-success"
+              style={{ alignSelf: "center" }}
+            >
+              Reward Sent
             </div>
-
-            <button onClick={onContinue} className="btn-primary w-full">
-              CONTINUE TO LEVEL {level + 1}
+            <p className="mono-font" style={{ fontSize: 18 }}>
+              {currentReward.amount} MNTYPE Claimed
+            </p>
+            <button onClick={onContinue} className="btn-primary">
+              Continue
             </button>
           </div>
         )}
 
         {claimStatus === "error" && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="text-5xl mb-4 text-[#B07BFF]">×</div>
-              <p className="text-red-400">
-                {errorMessage || "Something went wrong"}
-              </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div
+              style={{
+                fontSize: 14,
+                color: "var(--error)",
+                textAlign: "center",
+              }}
+            >
+              {errorMessage || "Failed to claim reward. Try again."}
             </div>
-
-            <div className="flex space-x-4">
+            <div style={{ display: "flex", gap: 12 }}>
               <button
                 onClick={claimReward}
                 disabled={isClaiming}
-                className="btn-primary flex-1"
+                className="btn-primary"
+                style={{ flex: 1 }}
               >
-                TRY AGAIN
+                Retry
               </button>
-
-              <button onClick={onContinue} className="btn-secondary flex-1">
-                SKIP & CONTINUE
+              <button
+                onClick={onContinue}
+                className="btn-secondary"
+                style={{ flex: 1 }}
+              >
+                Skip
               </button>
             </div>
           </div>
         )}
 
-        <button
-          onClick={onBackToMenu}
-          className="w-full text-gray-500 hover:text-gray-400 text-sm mt-6 font-light transition-colors"
-        >
-          ← BACK TO MENU
+        <button onClick={onBackToMenu} className="btn-ghost">
+          Back to Menu
         </button>
       </div>
     </div>
