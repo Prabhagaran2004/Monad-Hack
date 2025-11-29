@@ -26,138 +26,89 @@ const Sidebar: React.FC = () => {
   };
 
   // Calculate mock stats for display
-  const mockStats = {
-    wordsPerMinute: 42,
-    accuracy: 92,
-    streak: 15,
-  };
-
   const progressToNextLevel = ((gameState.score % 1000) / 1000) * 100;
 
   return (
-    <aside className="sidebar pixel-font max-w-xs w-full bg-[#161625] border-2 border-[#B07BFF] rounded-lg shadow-xl gap-6 p-6 flex flex-col items-stretch mt-4 md:mt-0">
-      <div className="space-y-6">
-        {/* Wallet Info */}
-        <div className="stat-card">
-          <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">
-            Wallet
-          </h3>
-          <div className="flex items-center space-x-2 mb-2">
-            <div className="w-2 h-2 rounded-full bg-[#6FFFB0] animate-pulse" />
-            <p className="text-[#B07BFF] font-mono text-sm">
-              {formatAddress(wallet.address!)}
-            </p>
-          </div>
+    <aside className="bg-[#161625] border border-[#2D2F45] rounded-lg shadow-lg p-6 space-y-6">
+      <div>
+        <h3 className="pixel-font text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">
+          Wallet
+        </h3>
+        <div className="flex items-center gap-3">
+          <span className="w-2 h-2 rounded-full bg-[#B07BFF] animate-pulse" />
+          <span className="font-mono text-sm text-[#B07BFF]">
+            {wallet.address ? formatAddress(wallet.address) : "Not connected"}
+          </span>
         </div>
+      </div>
 
-        {/* Balance */}
+      <div className="grid grid-cols-2 gap-4 text-sm">
         <div className="stat-card">
-          <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">
+          <p className="pixel-font text-gray-400 text-xs uppercase tracking-wider">
             Balance
-          </h3>
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-white">
-              {parseFloat(wallet.tokenBalance).toFixed(1)}
-            </span>
-            <span className="text-[#6FFFB0] font-bold text-sm">MNTYPE</span>
-          </div>
+          </p>
+          <p className="text-2xl font-bold text-white">
+            {parseFloat(wallet.tokenBalance || "0").toFixed(1)}
+          </p>
+          <p className="text-[#B07BFF] text-xs">MNTYPE</p>
         </div>
-
-        {/* Current Level */}
         <div className="stat-card">
-          <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">
-            Current Level
-          </h3>
-          <div className="flex items-center justify-between">
-            <span className="text-2xl pixel-font text-white">
-              {gameState.level}
-            </span>
-            <span className="text-[#FFA64D] font-bold text-sm">
-              {currentReward.reward} MNTYPE
-            </span>
-          </div>
-          <div className="progress-bar h-2">
+          <p className="pixel-font text-gray-400 text-xs uppercase tracking-wider">
+            Level
+          </p>
+          <p className="text-2xl font-bold text-white">{gameState.level}</p>
+          <p className="text-[#B07BFF] text-xs">
+            Reward {currentReward.reward} MNTYPE
+          </p>
+        </div>
+      </div>
+
+      <div className="stat-card space-y-4">
+        <div>
+          <p className="pixel-font text-xs text-gray-400 uppercase tracking-wider mb-1">
+            Progress
+          </p>
+          <div className="h-2 bg-[#20243a] rounded-full overflow-hidden">
             <div
-              className="progress-fill"
-              style={{ width: `${progressToNextLevel}%` }}
-            ></div>
+              className="h-full bg-[#B07BFF]"
+              style={{ width: `${Math.min(progressToNextLevel, 100)}%` }}
+            />
           </div>
           <p className="text-xs text-gray-400 mt-2">
             {progressToNextLevel.toFixed(0)}% to next level
           </p>
         </div>
 
-        {/* Game Stats */}
-        <div className="stat-card">
-          <h3 className="text-xs font-medium text-gray-400 mb-4 uppercase tracking-wider">
-            Stats
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300 text-sm">WPM</span>
-                <span className="text-white font-bold text-sm">
-                  {mockStats.wordsPerMinute}
-                </span>
-              </div>
-              <div className="progress-bar h-1.5">
-                <div
-                  className="progress-fill"
-                  style={{
-                    width: `${Math.min(
-                      (mockStats.wordsPerMinute / 100) * 100,
-                      100
-                    )}%`,
-                  }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300 text-sm">Accuracy</span>
-                <span className="text-white font-bold text-sm">
-                  {mockStats.accuracy}%
-                </span>
-              </div>
-              <div className="progress-bar h-1.5">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${mockStats.accuracy}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300 text-sm">Streak</span>
-              <span className="text-[#FFA64D] font-bold text-sm">
-                {mockStats.streak}x
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300 text-sm">Score</span>
-              <span className="text-[#38E8F8] font-bold text-sm score-display">
-                {gameState.score.toLocaleString()}
-              </span>
-            </div>
-          </div>
+        <div className="flex justify-between text-xs text-gray-300">
+          <span>Score</span>
+          <span className="text-[#B07BFF] font-semibold">
+            {gameState.score.toLocaleString()}
+          </span>
         </div>
-
-        {/* Quick Actions */}
-        <div className="stat-card">
-          <h3 className="text-xs font-medium text-gray-400 mb-4 uppercase tracking-wider">
-            Quick Actions
-          </h3>
-          <div className="space-y-2">
-            <button className="w-full btn-primary text-xs py-2" disabled={gameState.score < 50}>
-              Claim Rewards
-            </button>
-            <button className="w-full btn-secondary text-xs py-2">
-              View History
-            </button>
-          </div>
+        <div className="flex justify-between text-xs text-gray-300">
+          <span>Lives</span>
+          <span className="text-[#B07BFF] font-semibold">
+            {gameState.lives}
+          </span>
         </div>
+        <div className="flex justify-between text-xs text-gray-300">
+          <span>Enemies</span>
+          <span className="text-[#B07BFF] font-semibold">
+            {gameState.enemies.length}
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <button
+          className="btn-primary w-full text-xs py-2"
+          disabled={gameState.score < 50}
+        >
+          Claim Rewards
+        </button>
+        <button className="btn-secondary w-full text-xs py-2">
+          View History
+        </button>
       </div>
     </aside>
   );

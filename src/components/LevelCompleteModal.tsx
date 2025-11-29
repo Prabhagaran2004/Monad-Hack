@@ -85,7 +85,7 @@ const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
           <div className="flex justify-between items-center py-3 px-4 bg-[#1A1C2E] rounded-lg border border-[#2D3748]">
             <span className="text-gray-400 font-light">Reward:</span>
-            <span className="text-2xl pixel-font" style={{ color: "#6FFFB0" }}>
+            <span className="text-2xl pixel-font text-[#B07BFF]">
               {currentReward.amount} MNTYPE
             </span>
           </div>
@@ -102,16 +102,12 @@ const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
               disabled={isClaiming || !canClaim}
               className="btn-primary w-full"
             >
-              {isClaiming ? "Claiming..." : `Claim ${currentReward.amount} MNTYPE`}
+              {isClaiming
+                ? "Claiming..."
+                : `Claim ${currentReward.amount} MNTYPE`}
             </button>
 
-            <button
-              onClick={onContinue}
-              className="btn-primary w-full"
-              style={{
-                background: "linear-gradient(135deg, #718096 0%, #4a5568 100%)",
-              }}
-            >
+            <button onClick={onContinue} className="btn-secondary w-full">
               Skip & Continue
             </button>
           </div>
@@ -135,9 +131,7 @@ const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         {claimStatus === "error" && (
           <div className="space-y-6">
             <div className="text-center">
-              <div className="text-5xl mb-4" style={{ color: "#FF6B6B" }}>
-                ×
-              </div>
+              <div className="text-5xl mb-4 text-[#B07BFF]">×</div>
               <p className="text-red-400">
                 {errorMessage || "Something went wrong"}
               </p>

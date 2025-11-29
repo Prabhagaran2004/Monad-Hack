@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGame } from "../contexts/GameContext.tsx";
 
+const PRIMARY_COLOR = "#B07BFF";
+const PRIMARY_LIGHT = "#C599FF";
+const PRIMARY_SOFT = "#E5CCFF";
+const PRIMARY_DARK = "#7E4FF8";
+
 const GameCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { gameState, updateInput, destroyEnemy } = useGame();
-  const activeEnemyId = gameState.activeEnemyId;
+  const { gameState, activeEnemyId } = useGame();
 
   // Track pop animation
   const [popStates, setPopStates] = useState<Record<string, number[]>>({});
@@ -26,8 +30,8 @@ const GameCanvas: React.FC = () => {
 
   useEffect(() => {
     // On enemy typedChars increased, pop that letter
-    if (gameState.activeEnemyId) {
-      const enemy = gameState.enemies.find(e => e.id === gameState.activeEnemyId);
+    if (activeEnemyId) {
+      const enemy = gameState.enemies.find((e) => e.id === activeEnemyId);
       if (enemy) {
         setPopStates((prev) => {
           const pops = prev[enemy.id] || Array(enemy.word.length).fill(0);
@@ -42,7 +46,7 @@ const GameCanvas: React.FC = () => {
         });
       }
     }
-  }, [gameState.enemies, gameState.activeEnemyId]);
+  }, [gameState.enemies, activeEnemyId]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -77,7 +81,7 @@ const GameCanvas: React.FC = () => {
       const x = (i * 73) % canvas.width;
       const y = (i * 37 + time * 20) % canvas.height;
       const brightness = 0.3 + Math.sin(time + i) * 0.3;
-      ctx.fillStyle = `rgba(56, 232, 248, ${brightness})`;
+      ctx.fillStyle = `rgba(176, 123, 255, ${brightness})`;
       ctx.fillRect(x, y, 2, 2);
     }
 
@@ -86,7 +90,7 @@ const GameCanvas: React.FC = () => {
     const shipY = canvas.height - 50;
 
     // Ship body - pixelated triangle
-    ctx.fillStyle = "#38E8F8";
+    ctx.fillStyle = PRIMARY_COLOR;
     ctx.fillRect(shipX - 4, shipY - 20, 8, 8);
     ctx.fillRect(shipX - 8, shipY - 12, 16, 8);
     ctx.fillRect(shipX - 12, shipY - 4, 24, 8);
@@ -94,7 +98,7 @@ const GameCanvas: React.FC = () => {
     ctx.fillRect(shipX - 8, shipY + 12, 16, 8);
 
     // Ship glow effect
-    ctx.shadowColor = "#38E8F8";
+    ctx.shadowColor = PRIMARY_COLOR;
     ctx.shadowBlur = 10;
     ctx.fillRect(shipX - 4, shipY - 20, 8, 8);
     ctx.shadowBlur = 0;
@@ -107,10 +111,10 @@ const GameCanvas: React.FC = () => {
 
       // Enemy ship - pixelated design
       const enemyColor = isCompleted
-        ? "#6FFFB0"
+        ? PRIMARY_SOFT
         : isTargeted
-        ? "#FFA64D"
-        : "#B07BFF";
+        ? PRIMARY_LIGHT
+        : PRIMARY_DARK;
       ctx.fillStyle = enemyColor;
 
       // Draw pixel enemy ship
@@ -166,10 +170,10 @@ const GameCanvas: React.FC = () => {
         if (isTyped && popVal > 0) {
           const scale = 1 + 0.65 * (popVal / 8.0);
           ctx.globalAlpha = 1 - 0.12 * popVal;
-          ctx.translate(enemy.x + (i - word.length/2) * 14, enemy.y + 20);
+          ctx.translate(enemy.x + (i - word.length / 2) * 14, enemy.y + 20);
           ctx.scale(scale, scale);
-          ctx.fillStyle = "#6FFFB0";
-          ctx.shadowColor = "#38E8F8";
+          ctx.fillStyle = PRIMARY_LIGHT;
+          ctx.shadowColor = PRIMARY_COLOR;
           ctx.shadowBlur = 12;
           ctx.fillText(word[i], 0, 0);
           ctx.restore();
@@ -177,20 +181,28 @@ const GameCanvas: React.FC = () => {
           ctx.globalAlpha = 1.0;
         } else if (isTyped) {
           ctx.globalAlpha = 0.4;
-          ctx.fillStyle = "#6FFFB0";
-          ctx.fillText(word[i], enemy.x + (i - word.length/2) * 14, enemy.y + 20);
+          ctx.fillStyle = PRIMARY_LIGHT;
+          ctx.fillText(
+            word[i],
+            enemy.x + (i - word.length / 2) * 14,
+            enemy.y + 20
+          );
           ctx.globalAlpha = 1.0;
           ctx.restore();
         } else {
           ctx.fillStyle = "#FFFFFF";
-          ctx.fillText(word[i], enemy.x + (i - word.length/2) * 14, enemy.y + 20);
+          ctx.fillText(
+            word[i],
+            enemy.x + (i - word.length / 2) * 14,
+            enemy.y + 20
+          );
           ctx.restore();
         }
       }
 
       // Draw targeting box if this enemy is being typed
       if (isTargeted) {
-        ctx.strokeStyle = "#FFA64D";
+        ctx.strokeStyle = PRIMARY_LIGHT;
         ctx.lineWidth = 2;
         ctx.setLineDash([4, 4]);
         ctx.strokeRect(enemy.x - 35, enemy.y - 30, 70, 70);
@@ -202,8 +214,8 @@ const GameCanvas: React.FC = () => {
     if (gameState.currentInput) {
       ctx.font = "18px 'Courier New', monospace";
       ctx.textAlign = "center";
-      ctx.fillStyle = "#6FFFB0";
-      ctx.shadowColor = "#6FFFB0";
+      ctx.fillStyle = PRIMARY_LIGHT;
+      ctx.shadowColor = PRIMARY_LIGHT;
       ctx.shadowBlur = 10;
       ctx.fillText(
         `> ${gameState.currentInput}`,
@@ -223,7 +235,13 @@ const GameCanvas: React.FC = () => {
       }
       ctx.shadowBlur = 0;
     }
-  }, [gameState, gameState.enemies, gameState.currentInput, activeEnemyId, popStates]);
+  }, [
+    gameState,
+    gameState.enemies,
+    gameState.currentInput,
+    activeEnemyId,
+    popStates,
+  ]);
 
   return (
     <canvas

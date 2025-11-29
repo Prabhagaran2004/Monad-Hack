@@ -35,8 +35,8 @@ const GameHUD: React.FC = () => {
           <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
             Lives
           </div>
-          <div className="text-2xl font-bold" style={{ color: "#FF6B6B" }}>
-            {"❤️".repeat(gameState.lives)}
+          <div className="text-2xl font-bold text-[#B07BFF]">
+            {"💜".repeat(gameState.lives)}
           </div>
         </div>
 
@@ -44,7 +44,7 @@ const GameHUD: React.FC = () => {
           <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
             Enemies
           </div>
-          <div className="text-2xl pixel-font" style={{ color: "#FFA64D" }}>
+          <div className="text-2xl pixel-font text-[#B07BFF]">
             {gameState.enemies.length}
           </div>
         </div>
@@ -53,7 +53,7 @@ const GameHUD: React.FC = () => {
           <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
             Balance
           </div>
-          <div className="text-lg pixel-font" style={{ color: "#6FFFB0" }}>
+          <div className="text-lg pixel-font text-[#B07BFF]">
             {parseFloat(wallet.tokenBalance).toFixed(1)} MNTYPE
           </div>
         </div>
@@ -64,7 +64,7 @@ const GameHUD: React.FC = () => {
           <div className="text-gray-400 text-xs mb-1 uppercase tracking-wider">
             Player
           </div>
-          <div className="font-mono text-sm" style={{ color: "#B07BFF" }}>
+          <div className="font-mono text-sm text-[#B07BFF]">
             {formatAddress(wallet.address)}
           </div>
         </div>

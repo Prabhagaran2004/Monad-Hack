@@ -16,7 +16,7 @@ const GameOverModal: React.FC<GameOverModalProps> = ({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2 className="text-4xl pixel-font text-red-400 mb-8 text-center neon-text">
+        <h2 className="text-4xl pixel-font text-[#B07BFF] mb-8 text-center neon-text">
           GAME OVER
         </h2>
 

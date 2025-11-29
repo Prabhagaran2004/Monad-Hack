@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { WalletProvider, useWallet } from "./contexts/WalletContext.tsx";
 import { GameProvider } from "./contexts/GameContext.tsx";
 import WalletConnect from "./components/WalletConnect.tsx";
@@ -14,70 +14,83 @@ function AppContent() {
   const isWalletConnected = wallet.isConnected;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0E0E12] to-[#0A0F1F] pixel-font">
-      <div className="flex flex-col md:flex-row max-w-7xl mx-auto gap-8 p-4 md:p-8">
-        {isWalletConnected && <Sidebar />}
-        <div className="flex-1 flex flex-col items-center gap-8">
-          <Header currentView={currentView} setCurrentView={setCurrentView} />
-          <main className="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto">
+    <div className="min-h-screen bg-[#0D0F1A] text-white">
+      <Header currentView={currentView} setCurrentView={setCurrentView} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start">
+          <main className="flex-1">
             {!isWalletConnected ? (
-              <div className="flex flex-col items-center justify-center min-h-[70vh]">
-                <div className="text-center mb-8">
-                  <h1 className="text-6xl pixel-font text-white mb-6">
+              <section className="flex flex-col items-center text-center gap-8">
+                <div>
+                  <h1 className="text-5xl sm:text-6xl pixel-font text-white mb-6">
                     MONAD<span className="text-[#B07BFF]">TYPE</span>
                   </h1>
-                  <p className="text-xl text-gray-300 mb-8 font-light">
-                    A pixel-art typing shooter on Monad blockchain
+                  <p className="text-lg sm:text-xl text-gray-300 mb-4 font-light max-w-2xl">
+                    A pixel-art typing shooter built on the Monad blockchain.
                   </p>
-                  <p className="text-gray-400 mb-8 font-light">
-                    Connect your wallet to start playing and earning MNTYPE tokens
+                  <p className="text-gray-400 font-light max-w-xl">
+                    Connect your wallet to unlock levels, earn rewards, and
+                    compete on the leaderboard.
                   </p>
                 </div>
                 <WalletConnect onConnect={() => {}} />
-              </div>
+              </section>
+            ) : currentView === "menu" ? (
+              <section className="flex flex-col items-center text-center gap-8">
+                <div>
+                  <h2 className="text-4xl pixel-font text-white mb-4">
+                    Ready to play?
+                  </h2>
+                  <p className="text-lg text-gray-300 font-light max-w-2xl">
+                    Type the falling words before they land. Keep your accuracy
+                    high to boost your combo and claim more rewards.
+                  </p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <button
+                    onClick={() => setCurrentView("game")}
+                    className="btn-primary text-lg px-8 py-4"
+                  >
+                    Start Game
+                  </button>
+                  <button
+                    onClick={() => setCurrentView("levels")}
+                    className="btn-secondary text-lg px-8 py-4"
+                  >
+                    Levels
+                  </button>
+                  <button
+                    onClick={() => setCurrentView("rewards")}
+                    className="btn-secondary text-lg px-8 py-4"
+                  >
+                    Rewards
+                  </button>
+                </div>
+              </section>
+            ) : currentView === "game" ? (
+              <Game onBackToMenu={() => setCurrentView("menu")} />
+            ) : currentView === "levels" ? (
+              <section className="text-center space-y-4">
+                <h2 className="text-3xl pixel-font">Levels</h2>
+                <p className="text-gray-300">
+                  Progressive difficulty tiers coming soon.
+                </p>
+              </section>
             ) : (
-              <>
-                {currentView === "menu" ? (
-                  <div className="flex flex-col items-center justify-center min-h-[70vh]">
-                    <div className="text-center mb-8">
-                      <h2 className="text-4xl pixel-font text-white mb-6">
-                        READY TO PLAY?
-                      </h2>
-                      <p className="text-lg text-gray-300 mb-8 font-light">
-                        Type falling words to destroy enemies and earn rewards!
-                      </p>
-                    </div>
-                    <div className="flex space-x-4">
-                      <button
-                        onClick={() => setCurrentView("game")}
-                        className="btn-primary text-lg px-8 py-4"
-                      >
-                        Start Game
-                      </button>
-                      <button
-                        onClick={() => setCurrentView("levels")}
-                        className="btn-secondary text-lg px-8 py-4"
-                      >
-                        Levels
-                      </button>
-                    </div>
-                  </div>
-                ) : currentView === "game" ? (
-                  <Game onBackToMenu={() => setCurrentView("menu")} />
-                ) : currentView === "levels" ? (
-                  <div className="text-center text-white">
-                    <h2 className="text-3xl pixel-font mb-6">LEVELS</h2>
-                    <p className="text-gray-300">Coming soon...</p>
-                  </div>
-                ) : (
-                  <div className="text-center text-white">
-                    <h2 className="text-3xl pixel-font mb-6">REWARDS</h2>
-                    <p className="text-gray-300">Coming soon...</p>
-                  </div>
-                )}
-              </>
+              <section className="text-center space-y-4">
+                <h2 className="text-3xl pixel-font">Rewards</h2>
+                <p className="text-gray-300">
+                  Track your earnings and claim bonuses soon.
+                </p>
+              </section>
             )}
           </main>
+
+          {isWalletConnected && (
+            <aside className="w-full lg:w-80 flex-shrink-0">
+              <Sidebar />
+            </aside>
+          )}
         </div>
       </div>
     </div>

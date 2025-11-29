@@ -6,7 +6,7 @@
 :root {
   --bg-dark: #0e0e12;
   --bg-darker: #0a0f1f;
-  --neon-cyan: #38e8f8;
+  --neon-cyan: #b07bff;
   --neon-green: #6fffb0;
   --neon-purple: #b07bff;
   --neon-orange: #ffa64d;
@@ -52,15 +52,16 @@ body {
 }
 
 /* Buttons */
+
 .btn-primary {
-  background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+  background: var(--neon-purple);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.875rem;
@@ -68,7 +69,8 @@ body {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(56, 232, 248, 0.3);
+  box-shadow: 0 4px 15px rgba(176, 123, 255, 0.35);
+  background: #c599ff;
 }
 
 .btn-primary:disabled {
@@ -79,31 +81,31 @@ body {
 
 /* Secondary Button */
 .btn-secondary {
-  background: var(--card-bg);
+  background: #1a1c2e;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 1px solid #30324a;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .btn-secondary:hover {
-  background: rgba(45, 55, 72, 0.8);
+  background: #23253b;
   border-color: var(--neon-purple);
 }
 
 /* Wallet Button */
 .wallet-button {
-  background: linear-gradient(135deg, var(--neon-green), #38a169);
+  background: var(--neon-purple);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.875rem;
@@ -111,33 +113,21 @@ body {
 
 .wallet-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(111, 255, 176, 0.3);
+  box-shadow: 0 4px 15px rgba(176, 123, 255, 0.35);
+  background: #c599ff;
 }
 
 .wallet-button.connected {
-  background: linear-gradient(135deg, var(--neon-cyan), #3182ce);
+  background: #8c65ff;
 }
 
 /* Sidebar */
-.sidebar {
-  background: rgba(10, 15, 31, 0.9);
-  border-left: 1px solid var(--border-color);
-  padding: 1.5rem;
-  width: 320px;
-  height: calc(100vh - 80px);
-  position: fixed;
-  right: 0;
-  top: 80px;
-  overflow-y: auto;
-}
-
 /* Stats Cards */
 .stat-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1.25rem;
-  margin-bottom: 1rem;
   backdrop-filter: blur(10px);
 }
 
@@ -201,13 +191,13 @@ body {
 /* Animations */
 @keyframes neon-pulse {
   0% {
-    text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+    text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
   }
   50% {
-    text-shadow: 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+    text-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
   }
   100% {
-    text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+    text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
   }
 }
 
@@ -240,7 +230,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+  background: var(--neon-purple);
   transition: width 0.3s ease;
 }
 
@@ -266,8 +256,8 @@ body {
 .score-display {
   font-family: "Press Start 2P", monospace;
   font-size: 1.25rem;
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-cyan);
+  color: var(--neon-purple);
+  text-shadow: 0 0 10px var(--neon-purple);
 }
 
 /* Level Display */
@@ -297,18 +287,3 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .sidebar {
-    width: 280px;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    border-left: none;
-    border-top: 1px solid var(--border-color);
-  }
-}

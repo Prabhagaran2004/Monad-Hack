@@ -173,7 +173,7 @@ const Game: React.FC<GameProps> = ({ onBackToMenu }) => {
       </div>
 
       <div className="relative w-full max-w-4xl">
-        <GameCanvas activeEnemyId={gameState.activeEnemyId} />
+        <GameCanvas />
 
         {gameState.isPaused && (
           <div className="absolute inset-0 bg-[#0A0F1F] bg-opacity-90 flex items-center justify-center rounded-lg backdrop-filter backdrop-blur-sm">
